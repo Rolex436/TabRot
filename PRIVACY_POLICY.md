@@ -1,4 +1,4 @@
-# Privacy Policy — tab rot (Meagent)
+# Privacy Policy — tab rot
 
 **Last updated:** August 15, 2026
 

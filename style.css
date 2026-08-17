@@ -1,39 +1,90 @@
-*{box-sizing: border-box; margin: 0; padding: 0;}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-body{
-width: 400px;
-background:#111;
-font-family: sysytem-ui,
-sans-serif;
-color: #e0e0e0;
-} 
-
-
-
-
-#hdr{
-    display: flex;
-    align-items: center;
-    justify-content:
-    space-between;
-    padding: 10px 14px 8px;
-    border-bottom: 1px solid 
-    #1e1e1e;
+body {
+  width: 420px;
+  background: #111;
+  font-family: system-ui, sans-serif;
+  color: #e0e0e0;
 }
 
 
 
-
-#tti {
-    font-size: 13px;
-    font-weight: 600;
-    color: #e0e0e0;
-    letter-spacing: 0.05em;
+#hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid #1e1e1e;
 }
 
-
-
-
-#cnt{ font-size: 11px; 
-color: #555;
+#ttl {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #e0e0e0;
 }
+
+#hdr-r {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#cnt { font-size: 11px; color: #555; }
+
+#dbg-btn {
+  font-size: 11px;
+  padding: 3px 12px;
+  border-radius: 99px;
+  border: 1px solid #2e2e2e;
+  background: #1a1a1a;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+#dbg-btn:hover { border-color: #444; color: #888; }
+#dbg-btn.on    { background: #0e2010; border-color: #2a6030; color: #5a9a60; }
+#dbg-btn.on #dbg-st { color: #6abf70; }
+
+
+#dbg-panel {
+  display: none;
+  background: #0d0d0d;
+  border-bottom: 1px solid #1e1e1e;
+  padding: 8px;
+}
+#dbg-panel.vis { display: block; }
+
+#dbg-lbl {
+  font-size: 10px;
+  color: #444;
+  padding: 0 4px 6px;
+  letter-spacing: 0.04em;
+}
+
+#dbg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dbg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: #141414;
+  border: 1px solid #1e1e1e;
+}
+
+.dbg-nm {
+  flex: 1;
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sws { display: flex; gap: 4px; flex-shrink: 0; }
