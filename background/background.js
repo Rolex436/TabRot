@@ -1,28 +1,30 @@
-var st = chrome.storage.local;
+var st = browser.storage.local;
 
-var grp_clr = ['', 'yellow', 'orange', 'red'];
-
-hrome.runtime.onInstalled.addListener(function() {
-  st.set({ rot: {}, mps: 30 });
-  chrome.alarms.create('tick', { periodInMinutes: 30 });
+browser.runtime.onInstalled.addListener(() => {
+  st.set({ rot:{}, hps:24 });
+  browser.alarms.create('tick', { periodInMinutes:1 });
 });
 
-chrome.alarms.onAlarm.addListener(function(a) {
-  if (a.name === 'tick') tick();
+browser.runtime.onStartup.addListener(() => { tk(); });
+
+browser.alarms.onAlarm.addListener(a => { if(a.name==='tick') tk(); });
+
+browser.tabs.onActivated.addListener(i => { rst(i.tabId); });
+
+browser.tabs.onCreated.addListener(t => {
+  st.get('rot').then(res => {
+    var d = res.rot||{};
+    d[t.id] = { s:0, last:Date.now() };
+    st.set({ rot:d });
+  });
+  setTimeout(() => send(t.id, 0), 300);
 });
 
-chrome.tabs.onActivated.addListener(function(info) {
-  rst(info.tabId);
-});
-
-chrome.tabs.onCreated.addListener(function(t) {
-  rst(t.id);
-});
-
-chrome.tabs.onRemoved.addListener(function(id) {
-  st.get('rot', function(res) {
-    var rd = res.rot || {};
-    delete rd[id];
-    st.set({ rot: rd });
+browser.tabs.onUpdated.addListener((id, chg) => {
+  if(chg.status !== 'complete') return;
+  st.get('rot').then(res => {
+    var d = res.rot||{};
+    if(!d[id]) return;
+    browser.tabs.sendMessage(id, { rot:d[id].s }).catch(()=>{});
   });
 });

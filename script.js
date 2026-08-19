@@ -1,4 +1,5 @@
 var st = browser.storage.local;
+
 async function init() {
   var tabs = await browser.tabs.query({});
   var res  = await st.get(['rot', 'hps', 'dbg']);
@@ -68,4 +69,77 @@ function upd_row(row, s) {
   row.dataset.s = s;
   var sg = row.querySelector('.sg');
   if(sg) sg.textContent = stage_lbl(s);
+}
+
+
+
+function open_t(id, row) {
+  browser.tabs.update(id, { active:true });
+  st.get('rot').then(function(res) {
+    var rd = res.rot||{};
+    rd[id] = { s:0, last:Date.now() };
+    st.set({ rot:rd });
+  });
+  send(id, 0);
+  upd_row(row, 0);
+  var dbg_row = document.querySelector('.dbg-row[data-id="'+id+'"]');
+  if(dbg_row) set_sw_active(dbg_row, 0);
+}
+
+
+
+function set_dbg_ui(on) {
+  document.getElementById('dbg-panel').classList.toggle('vis', on);
+  var btn = document.getElementById('dbg-btn');
+  btn.classList.toggle('on', on);
+  document.getElementById('dbg-st').textContent = on ? 'on' : 'off';
+}
+
+async function render_dbg(tabs, rd, hps) {
+  var list = document.getElementById('dbg-list');
+  list.innerHTML = '';
+  tabs.forEach(function(t) {
+    var cur  = rd[t.id] ? rd[t.id].s : 0;
+    var drow = document.createElement('div');
+    drow.className  = 'dbg-row';
+    drow.dataset.id = t.id;
+
+    var nm = document.createElement('span');
+    nm.className   = 'dbg-nm';
+    nm.textContent = (t.title||'untitled').slice(0,30);
+
+    var sws = mk_sws(t.id, cur, hps);
+    drow.appendChild(nm);
+    drow.appendChild(sws);
+    list.appendChild(drow);
+  });
+}
+
+function mk_sws(id, cur, hps) {
+  var wrap = document.createElement('div');
+  wrap.className = 'sws';
+
+  [0,1,2,3,4,5].forEach(function(lvl) {
+    var sw = document.createElement('button');
+    sw.className = 'sw sw-'+lvl+(cur===lvl?' on':'');
+    sw.title = stage_lbl(lvl);
+
+    sw.addEventListener('click', function() {
+      set_rot(id, lvl, hps);
+      send(id, lvl);
+      set_sw_active(wrap.parentElement, lvl);
+      var main = document.querySelector('.row[data-id="'+id+'"]');
+      if(main) {
+        upd_row(main, lvl);
+        if(lvl >= 5) {
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() { die(main, id); });
+          });
+        }
+      }
+    });
+
+    wrap.appendChild(sw);
+  });
+  return wrap;
 }
