@@ -28,3 +28,28 @@ browser.tabs.onUpdated.addListener((id, chg) => {
     browser.tabs.sendMessage(id, { rot:d[id].s }).catch(()=>{});
   });
 });
+
+browser.tabs.onRemoved.addListener(id => {
+  st.get('rot').then(res => { var d=res.rot||{}; delete d[id]; st.set({ rot:d }); });
+});
+
+browser.runtime.onMessage.addListener((msg, snd) => {
+  if(msg.close_me && snd.tab) {
+    var id = snd.tab.id;
+    browser.tabs.remove(id);
+    st.get('rot').then(res => { var d=res.rot||{}; delete d[id]; st.set({ rot:d }); });
+  }
+});
+
+function rst(id) {
+  st.get('rot').then(res => {
+    var d = res.rot||{};
+    d[id] = { s:0, last:Date.now() };
+    st.set({ rot:d });
+    send(id, 0);
+  });
+}
+
+function send(id, s) {
+  browser.tabs.sendMessage(id, { rot:s }).catch(()=>{});
+}

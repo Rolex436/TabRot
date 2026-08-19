@@ -5,17 +5,30 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <div id="hdr">
     <span id="ttl">tab rot</span>
-    <span id="cnt"></span>
+    <div id="hdr-r">
+      <span id="cnt"></span>
+      <button id="dbg-btn">debug: <span id="dbg-st">off</span></button>
+    </div>
+  </div>
+
+  <div id="dbg-panel">
+    <div id="dbg-lbl">click swatch → set stage · fresh / grain1 / grain2 / fade1 / fade2 / dying</div>
+    <div id="dbg-list"></div>
   </div>
 
   <div id="tabs"></div>
 
   <div id="foot">
-    <label>mins / stage</label>
-    <input type="range" id="spd" min="1" max="60" step="1" value="30">
-    <span id="spd-lbl">30m</span>
+    <span class="fl">stage every</span>
+    <div id="pre-btns">
+      <button class="pre" data-h="1">1h</button>
+      <button class="pre" data-h="6">6h</button>
+      <button class="pre" data-h="24">1d</button>
+      <button class="pre" data-h="168">1w</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
