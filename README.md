@@ -1,6 +1,6 @@
 ## TabRot
 
-## Intro
+## About
 It is time-activity based tab manager so as long as a tab left unused, it's favicon got blurred and as you can set time for rotting period.
 There are stages for rotting like overlay on favicon strength and and very last 5 sec the favicon blink and tab bar title too.
 
