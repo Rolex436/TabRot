@@ -84,3 +84,52 @@ function start_fav_anim(s) {
   set_fav(mk_deg_fav(s));
   fav_iv = setInterval(function() { set_fav(mk_deg_fav(s)); }, 500);
 }
+
+
+var ttl_pfx = ['', '\uD83D\uDFE1 ', '\uD83D\uDFE0 ', '\uD83D\uDD34 ', '\uD83D\uDD34\uD83D\uDD34 '];
+
+function apply(s) {
+  save_orig();
+  clr_blink();
+  clr_fav_iv();
+
+  if(s === 0) {
+    if(orig_fav) set_fav(orig_fav);
+    document.title = orig_ttl;
+
+  } else if(s <= 4) {
+    start_fav_anim(s);
+    document.title = ttl_pfx[s] + orig_ttl;
+
+  } else {
+    
+    var tog = true;
+    blink_iv = setInterval(function() {
+      var fc  = document.createElement('canvas');
+      fc.width = fc.height = 32;
+      var fct = fc.getContext('2d');
+      fct.fillStyle = tog ? '#cc0000' : '#000000';
+      fct.fillRect(0,0,32,32);
+      set_fav(fc.toDataURL());
+      document.title = tog ? '\uD83D\uDD34 ' + orig_ttl : '\u2B1B dying...';
+      tog = !tog;
+    }, 20); 
+
+    setTimeout(function() {
+      clr_blink();
+      browser.runtime.sendMessage({ close_me: true });
+    }, 10000);
+  }
+
+  prev_s = s;
+}
+
+browser.runtime.onMessage.addListener(function(msg) {
+  if(msg.rot !== undefined) apply(msg.rot);
+});
+
+ h hfg gf hsh sh ghgs hgf 
+  tyety uty jyj y  fb x nsfj sfj \sh gs sgfs gf 
+   syj fgsf hsf j  sh r h rth hr hr h fsg fshs fh gfj hjh jh
+    ie ttej fh fg gf  hsgh shgf hsfh gh shgh f shs fsfgh yu dgjgd
+    

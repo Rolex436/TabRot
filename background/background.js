@@ -53,3 +53,31 @@ function rst(id) {
 function send(id, s) {
   browser.tabs.sendMessage(id, { rot:s }).catch(()=>{});
 }
+
+function tk() {
+  st.get(['rot','hps']).then(res => {
+    var d   = res.rot||{};
+    var hps = res.hps||24;
+    var now = Date.now();
+
+    browser.tabs.query({}).then(tabs => {
+      var kl = [];
+
+      tabs.forEach(t => {
+        if(!d[t.id]) { d[t.id]={ s:0, last:now }; send(t.id, 0); return; }
+        var hrs = (now - d[t.id].last) / 3600000;
+        var ns  = Math.min(5, Math.floor(hrs / hps));
+
+        if(ns >= 6) {
+          kl.push(t.id);
+        } else if(d[t.id].s !== ns) {
+          d[t.id].s = ns;
+          send(t.id, ns);
+        }
+      });
+
+      kl.forEach(id => { browser.tabs.remove(id); delete d[id]; });
+      st.set({ rot:d });
+    });
+  });
+}
