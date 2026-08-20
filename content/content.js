@@ -127,9 +127,3 @@ function apply(s) {
 browser.runtime.onMessage.addListener(function(msg) {
   if(msg.rot !== undefined) apply(msg.rot);
 });
-
- h hfg gf hsh sh ghgs hgf 
-  tyety uty jyj y  fb x nsfj sfj \sh gs sgfs gf 
-   syj fgsf hsf j  sh r h rth hr hr h fsg fshs fh gfj hjh jh
-    ie ttej fh fg gf  hsgh shgf hsfh gh shgh f shs fsfgh yu dgjgd
-    
